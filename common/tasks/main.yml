@@ -1,0 +1,16 @@
+- name: Disable firewalld(CentOS7)
+  service: name=firewalld state=stopped enabled=no
+  when: "ansible_distribution_major_version=='7'"
+
+- name: Disable iptables(CentOS6)
+  service: name=iptables state=stopped enabled=no
+  when: "ansible_distribution_major_version=='6'"
+
+- name: Disable SELINUX
+  selinux: policy=targetd state=disabled
+
+- name: Commentout IPv6 from host
+  replace:
+    dest=/etc/hosts
+    regexp="^::1         localhost localhost.localdomain localhost6 localhost6.localdomain6"
+    replace="#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6"
